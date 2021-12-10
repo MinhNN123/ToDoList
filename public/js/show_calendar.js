@@ -5,7 +5,7 @@ $(document).ready(function () {
             center: 'title',
             right: 'month, agendaWeek, agendaDay'
         },
-        editable: true,
+        editable: false,
         events: function (start, end, timezone, callback) {
             $.ajax({
                 url: "?controller=pages&action=getList",
@@ -45,20 +45,6 @@ $(document).ready(function () {
 
             $('#titleModal').text("Add an Event");
             $(".modal-footer").append('<button type="button" class="btn btn-success" id="addButton">Save</button>');
-        },
-
-        editable: true,
-        eventDrop: function (event, delta) {
-            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-            $.ajax({
-                url: 'edit-event.php',
-                data: 'title=' + event.title + '&start=' + start + '&end=' + end + '&id=' + event.id,
-                type: "POST",
-                success: function () {
-                    displayMessage("Updated Successfully");
-                }
-            });
         },
         eventClick: function (event) {
             $.ajax({
