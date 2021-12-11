@@ -18,12 +18,24 @@ $(document).ready(function () {
                     var object = JSON.parse(response);
 
                     for (var i = 0; i < object.length; i++) {
+                        var color = '';
+                        if (object[i].status == PLANNING){
+                            color = '#85C1E9';
+                        }
+                        else if (object[i].status == DOING){
+                            color = '#7DCEA0';
+                        }
+                        else if (object[i].status == DONE){
+                            color = '#F1948A';
+                        }
+
                         events.push({
                             title: object[i].title,
                             start: object[i].start,
                             end: object[i].end,
                             id: object[i].id,
-                            status: object[i].status
+                            status: object[i].status,
+                            color: color 
                         });
                     }
                     callback(events);
