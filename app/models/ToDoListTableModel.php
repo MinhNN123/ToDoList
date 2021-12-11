@@ -7,8 +7,7 @@ class ToDoListTableModel
   {
     $list = [];
     $connection = Connection::getInstance();
-    $sqlSearch = 'SELECT id, work_name, date_format(starting_date,"%Y-%m-%d %H:%i:%s") as starting_date,
-    date_format(ending_date,"%Y-%m-%d %H:%i:%s") as ending_date, status FROM to_do_list_table WHERE delete_flg = 0';
+    $sqlSearch = 'SELECT id, work_name, starting_date, ending_date, status FROM to_do_list_table WHERE delete_flg = 0';
     $request = $connection->query($sqlSearch);
     $result = $request->fetchAll();
 
@@ -44,8 +43,7 @@ class ToDoListTableModel
     $event = [];
     $eventId = isset($_POST['id']) ? (int)$_POST['id'] : "";
     $connection = Connection::getInstance();
-    $sqlSearch = 'SELECT id, work_name, date_format(starting_date,"%Y-%m-%d %H:%i:%s") as starting_date,
-    date_format(ending_date,"%Y-%m-%d %H:%i:%s") as ending_date, status FROM to_do_list_table WHERE delete_flg = 0 and id ='.$eventId.'';
+    $sqlSearch = 'SELECT id, work_name, starting_date, ending_date, status FROM to_do_list_table WHERE delete_flg = 0 and id ='.$eventId.'';
     $request = $connection->query($sqlSearch);
     $result = $request->fetchAll();
 

@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    const PLANNING = 1;
+    const DOING = 2;
+    const DONE = 3;
+
     $('#calendar').fullCalendar({
         header: {
             left: 'prev,next, today',
@@ -40,9 +44,10 @@ $(document).ready(function () {
         select: function (start, end, allDay) {
             clearAllInput();
             $('#createEventModal').modal('show');
-            $('#startingDate').val(new Date(start).toJSON().slice(0, 19));
-            $('#endingDate').val(new Date(end).toJSON().slice(0, 19));
-
+            var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
+            var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
+            $('#startingDate').val(start);
+            $('#endingDate').val(end);
             $('#titleModal').text("Add an Event");
             $(".modal-footer").append('<button type="button" class="btn btn-success" id="addButton">Save</button>');
         },
@@ -66,10 +71,12 @@ $(document).ready(function () {
                         }
 
                         clearAllInput();
+                        var startingDate = moment(new Date(object[0].start)).format("Y-MM-DD");
+                        var endingDate = moment(new Date(object[0].end)).format("Y-MM-DD");
                         $('#workName').val(object[0].title);
                         $('#status').val(object[0].status);
-                        $('#startingDate').val(new Date(object[0].start).toJSON().slice(0, 19));
-                        $('#endingDate').val(new Date(object[0].end).toJSON().slice(0, 19));
+                        $('#startingDate').val(startingDate);
+                        $('#endingDate').val(endingDate);
                         $('#titleModal').text("Edit Event");
                         $(".modal-footer").append('<button type="button" class="btn btn-primary" data-id=' + event.id + ' id="updateButton">Update</button>');
                         $(".modal-footer").append('<button type="button" class="btn btn-danger" data-id=' + event.id + ' id="deleteButton">Delete</button>');
@@ -81,6 +88,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#addButton', function () {
+        clearErrorMessage();
         if (IsValidInput()) {
             var workName = $('#workName').val();
             var startingDate = $('#startingDate').val();
@@ -118,6 +126,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#updateButton', function () {
+        clearErrorMessage();
         if (IsValidInput()) {
             var workName = $('#workName').val();
             var startingDate = $('#startingDate').val();
@@ -143,16 +152,20 @@ $(document).ready(function () {
     }
 
     function clearAllInput() {
-        $('#errorWorkName').text('');
-        $("#errorStartingDate").text('');
-        $("#errorEndingDate").text('');
-        $("#errorStatus").text('');
+        clearErrorMessage();
         $('#titleModal').text('');
         $('#workName').val('');
         $('#status').val(1);
         $('#startingDate').val();
         $('#endingDate').val();
         $("#updateButton, #deleteButton, #addButton").remove();
+    }
+
+    function clearErrorMessage() {
+        $('#errorWorkName').text('');
+        $("#errorStartingDate").text('');
+        $("#errorEndingDate").text('');
+        $("#errorStatus").text('');
     }
 
     function IsValidInput() {
@@ -192,7 +205,7 @@ $(document).ready(function () {
             result = false;
         }
 
-        if ((status != 1) && (status != 2) && (status != 3)) {
+        if ((status != PLANNING) && (status != DOING) && (status != DONE)) {
             $("#errorStatus").text("Vui lòng chọn status hợp lệ!");
             $("#errorStatus").css("color", "red");
             result = false;

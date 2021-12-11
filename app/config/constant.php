@@ -1,6 +1,9 @@
 <?php
-define("SITE_URL","http://todolist.local");
-define("PLANNING", 1);
-define("DOING", 2);
-define("DONE", 3);
+class Constant
+{
+    // constant cho status: planning, doing, done
+    const PLANNING = 1;
+    const DOING = 2;
+    const DONE = 3;
+}
 ?>
